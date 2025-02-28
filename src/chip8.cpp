@@ -136,6 +136,7 @@ bool chip8::loadApplication(const char * filename)
 
     if (!input.is_open())
     {
+        std::cerr << "Failed to open file " << filename << std::endl;
         return false;
     }
 
