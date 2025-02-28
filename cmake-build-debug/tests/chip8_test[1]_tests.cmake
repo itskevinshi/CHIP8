@@ -1,0 +1,5 @@
+add_test([=[Chip8Test.ClearScreenOpcode]=]  [==[C:/Users/kevin/Documents/UVA/Coding Projects/CHIP8/cmake-build-debug/tests/chip8_test.exe]==] [==[--gtest_filter=Chip8Test.ClearScreenOpcode]==] --gtest_also_run_disabled_tests)
+set_tests_properties([=[Chip8Test.ClearScreenOpcode]=]  PROPERTIES WORKING_DIRECTORY [==[C:/Users/kevin/Documents/UVA/Coding Projects/CHIP8/cmake-build-debug/tests]==] SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+add_test([=[Chip8Test.SetIRegister]=]  [==[C:/Users/kevin/Documents/UVA/Coding Projects/CHIP8/cmake-build-debug/tests/chip8_test.exe]==] [==[--gtest_filter=Chip8Test.SetIRegister]==] --gtest_also_run_disabled_tests)
+set_tests_properties([=[Chip8Test.SetIRegister]=]  PROPERTIES WORKING_DIRECTORY [==[C:/Users/kevin/Documents/UVA/Coding Projects/CHIP8/cmake-build-debug/tests]==] SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+set(  chip8_test_TESTS Chip8Test.ClearScreenOpcode Chip8Test.SetIRegister)
