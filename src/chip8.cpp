@@ -78,27 +78,34 @@ void chip8::initialize()
 
 void chip8::emulateCycle()
 {
-    // Fetch opcode - this part is correct
     unsigned char part1 = memory[pc];
     unsigned char part2 = memory[pc + 1];
     unsigned short opcode = part1 << 8 | part2;
-    pc += 2;
 
-    switch(opcode & 0xF000) // Only check the first nibble initially
+    switch(opcode & 0xF000)
     {
     case 0x0000:
-        switch(opcode & 0x00FF) // For 0xxx opcodes, check last byte
+        switch(opcode & 0x00FF)
         {
-            case 0x00E0: // Clear screen
+            case 0x00E0:
                 for (int i = 0; i < sizeof(gfx) / sizeof(gfx[0]); i++)
                 {
                     gfx[i] = 0;
                 }
                 drawFlag = true;
+                pc += 2;
                 break;
 
             case 0x00EE: // Return from subroutine
                 // implement 00EE
+                // decrease stack pointer
+                if (sp > 0)
+                {
+                    sp--;
+                    // set program counter to value at the top of the stack
+                    pc = stack[sp];
+                    pc += 2;
+                }
                 break;
 
             default: // 0NNN: Calls machine code routine (RCA 1802)
@@ -107,14 +114,57 @@ void chip8::emulateCycle()
         }
         break;
 
+    case 0x1000:
+        pc = opcode & 0x0FFF;
+        break;
+
+    case 0x2000:
+        if (sp < 16)
+        {
+            pc = stack[sp];
+            sp++;
+            pc = opcode & 0x0FFF;
+        }
+        break;
+
+    case 0x3000:
+        {
+            // skip the next instruction if register v[x] is equal to NN
+            const unsigned char vReg = V[opcode & 0x0F00] >> 8;
+            if (const unsigned char NN = opcode & 0x00FF; vReg == NN)
+            {
+                pc += 4;
+            }
+            else
+            {
+                pc += 2;
+            }
+            break;
+        }
+
+    case 0x4000:
+        {
+            // skip the next instruction if register v[x] is not equal to NN
+            const unsigned char vReg = V[opcode & 0x0F00] >> 8;
+            if (const unsigned char NN = opcode & 0x00FF; vReg != NN)
+            {
+                pc += 4;
+            }
+            else
+            {
+                pc += 2;
+            }
+        }
+
     case 0xA000:
         I = opcode & 0x0FFF;
+        pc += 2;
         break;
 
     }
 }
 
-void chip8::debugRender()
+void chip8::debugRender() const
 {
     constexpr int ROWS {32};
     constexpr int COLS {64};
