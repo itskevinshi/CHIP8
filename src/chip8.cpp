@@ -130,7 +130,7 @@ void chip8::emulateCycle()
     case 0x3000:
         {
             // skip the next instruction if register v[x] is equal to NN
-            const unsigned char vReg = V[opcode & 0x0F00] >> 8;
+            const unsigned char vReg = V[(opcode & 0x0F00) >> 8];
             if (const unsigned char NN = opcode & 0x00FF; vReg == NN)
             {
                 pc += 4;
@@ -145,7 +145,7 @@ void chip8::emulateCycle()
     case 0x4000:
         {
             // skip the next instruction if register v[x] is not equal to NN
-            const unsigned char vReg = V[opcode & 0x0F00] >> 8;
+            const unsigned char vReg = V[(opcode & 0x0F00) >> 8];
             if (const unsigned char NN = opcode & 0x00FF; vReg != NN)
             {
                 pc += 4;
@@ -154,6 +154,115 @@ void chip8::emulateCycle()
             {
                 pc += 2;
             }
+        }
+
+    case 0x6000:
+        {
+            const unsigned char NN = opcode & 0x00FF;
+            V[(opcode & 0x0F00) >> 8] = NN;
+            pc += 2;
+            break;
+        }
+
+    case 0x7000:
+        {
+            const unsigned char NN = opcode & 0x00FF;
+            V[(opcode & 0x0F00) >> 8] += NN;
+            pc += 2;
+            break;
+        }
+
+    case 0x8000:
+        switch (opcode & 0x000F)
+        {
+            case 0x0000:
+                V[(opcode & 0x0F00) >> 8] = V[(opcode & 0x00F0) >> 4];
+                pc += 2;
+                break;
+            case 0x0001:
+                {
+                    const unsigned char bitOr = V[(opcode & 0x0F00) >> 8] | V[(opcode & 0x00F0) >> 4];
+                    V[(opcode & 0x0F00) >> 8] = bitOr;
+                    pc += 2;
+                    break;
+                }
+            case 0x0002:
+                {
+                    const unsigned char bitAnd = V[(opcode & 0x0F00) >> 8] & V[(opcode & 0x00F0) >> 4];
+                    V[(opcode & 0x0F00) >> 8] = bitAnd;
+                    pc += 2;
+                    break;
+                }
+
+            case 0x0003:
+                {
+                    const unsigned char bitXOR = V[(opcode & 0x0F00) >> 8] ^ V[(opcode & 0x00F0) >> 4];
+                    V[(opcode & 0x0F00) >> 8] = bitXOR;
+                    pc += 2;
+                    break;
+                }
+
+            case 0x0004:
+                {
+                    const unsigned char sumResult = V[(opcode & 0x0F00) >> 8] + V[(opcode & 0x00F0) >> 4];
+                    V[(opcode & 0x0F00) >> 8] = sumResult;
+                    // check for overflow
+                    if (V[(opcode & 0x0F00) >> 8] < sumResult || V[(opcode & 0x00F0) >> 4] < sumResult)
+                    {
+                        V[15] = 1;
+                    }
+                    else
+                    {
+                        V[15] = 0;
+                    }
+                    pc += 2;
+                    break;
+                }
+            case 0x0005:
+                {
+                    const unsigned char minusResult = V[(opcode & 0x0F00) >> 8] - V[(opcode & 0x00F0) >> 4];
+                    V[(opcode & 0x0F00) >> 8] = minusResult;
+                    // set flag if underflow
+                    unsigned char flag = 0;
+                    if (V[(opcode & 0x0F00) >> 8] > V[(opcode & 0x00F0) >> 4])
+                    {
+                        flag = 1;
+                    }
+                    V[15] = flag;
+                    pc += 2;
+                    break;
+                }
+
+            case 0x0006:
+                {
+                    V[15] = V[(opcode & 0x0F00) >> 8] & 1;
+                    V[(opcode & 0x0F00) >> 8] = V[(opcode & 0x0F00) >> 8] >> 1;
+                    pc += 2;
+                    break;
+                }
+
+            case 0x0007:
+                {
+                    const unsigned char minusResult = V[(opcode & 0x00F0) >> 4] - V[(opcode & 0x0F00) >> 8];
+                    if (V[(opcode & 0x00F0) >> 4] > V[(opcode & 0x0F00) >> 8])
+                    {
+                        V[15] = 1;
+                    }
+                    else
+                    {
+                        V[15] = 0;
+                    }
+                    pc += 2;
+                    break;
+                }
+
+            case 0x000E:
+                {
+                    V[15] = (V[(opcode & 0x0F00) >> 8] >> 7) & 1;
+                    V[(opcode & 0x0F00) >> 8] = V[(opcode & 0x0F00) >> 8] << 1;
+                    pc += 2;
+                    break;
+                }
         }
 
     case 0xA000:
