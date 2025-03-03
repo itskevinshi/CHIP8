@@ -7,6 +7,7 @@
 #include <iterator>
 #include <algorithm>
 #include <iostream>
+#include <random>
 
 unsigned char chip8_fontset[80]
 {
@@ -154,6 +155,20 @@ void chip8::emulateCycle()
             {
                 pc += 2;
             }
+            break;
+        }
+
+    case 0x5000:
+        {
+            if (V[opcode & 0x0F00 >> 8] == V[opcode & 0x00F0 >> 4])
+            {
+                pc += 4;
+            }
+            else
+            {
+                pc += 2;
+            }
+            break;
         }
 
     case 0x6000:
@@ -265,11 +280,48 @@ void chip8::emulateCycle()
                 }
         }
 
+    case 0x9000:
+        // skip next instruction if VX != VY
+        switch (opcode & 0x000F)
+        {
+            case 0x0000:
+                if (V[opcode & 0x0F00 >> 8] != V[(opcode & 0x00F0 >> 4)])
+                    {
+                        pc += 4;
+                    }
+                else
+                    {
+                        pc += 2;
+                    }
+                break;
+        }
+
     case 0xA000:
         I = opcode & 0x0FFF;
         pc += 2;
         break;
 
+    case 0xB000:
+        pc = V[0] + opcode & 0x0FFF;
+        break;
+
+    case 0xC000:
+        {
+            // Seed for random number generation
+            std::random_device rd;
+            std::mt19937 gen(rd());
+
+            // Define the range
+            int min_val = 0;
+            int max_val = 255;
+
+            // Distribution
+            std::uniform_int_distribution<> distrib(min_val, max_val);
+            unsigned char randNum = distrib(gen);
+            V[opcode & 0x0F00 >> 8] = randNum & (opcode & 0x00FF);
+            pc += 2;
+            break;
+        }
     }
 }
 
