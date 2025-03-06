@@ -322,6 +322,43 @@ void chip8::emulateCycle()
             pc += 2;
             break;
         }
+
+    case 0xD000:
+        {
+            unsigned char xCoord = V[(opcode & 0x0F00) >> 8] % 64;
+            unsigned char yCoord = V[(opcode & 0x00F0) >> 4] % 32;
+            V[15] = 0;
+            unsigned char n = opcode & 0x000F;
+            for (int i = 0; i < n; i++)
+            {
+                unsigned char spriteByte = memory[I+i];
+                for (int j = 0; j < 8; j++)
+                {
+                    unsigned char bit = (spriteByte >> 7-j) & 0x01;
+                    if (xCoord + j >= 64)
+                    {
+                        break;
+                    }
+                    if (bit == 1 && gfx[yCoord * 64 + xCoord + j] == 1)
+                    {
+                        gfx[yCoord * 64 + xCoord + j] = 0;
+                        V[15] = 1;
+                    }
+                    else if (bit == 1 && gfx[yCoord * 64 + xCoord + j] == 0)
+                    {
+                        gfx[yCoord * 64 + xCoord + j] = 1;
+                    }
+                }
+                yCoord++;
+                if (yCoord >= 32)
+                {
+                    break;
+                }
+            }
+            drawFlag = true;
+            pc += 2;
+            break;
+        }
     }
 }
 
