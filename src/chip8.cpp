@@ -160,7 +160,7 @@ void chip8::emulateCycle()
 
     case 0x5000:
         {
-            if (V[opcode & 0x0F00 >> 8] == V[opcode & 0x00F0 >> 4])
+            if (V[(opcode & 0x0F00) >> 8] == V[(opcode & 0x00F0) >> 4])
             {
                 pc += 4;
             }
@@ -220,9 +220,10 @@ void chip8::emulateCycle()
             case 0x0004:
                 {
                     const unsigned char sumResult = V[(opcode & 0x0F00) >> 8] + V[(opcode & 0x00F0) >> 4];
+                    // std::cout << sumResult << std::endl;
                     V[(opcode & 0x0F00) >> 8] = sumResult;
                     // check for overflow
-                    if (V[(opcode & 0x0F00) >> 8] < sumResult || V[(opcode & 0x00F0) >> 4] < sumResult)
+                    if (V[(opcode & 0x0F00) >> 8] > sumResult || V[(opcode & 0x00F0) >> 4] > sumResult)
                     {
                         V[15] = 1;
                     }
@@ -237,11 +238,11 @@ void chip8::emulateCycle()
                 {
                     const unsigned char minusResult = V[(opcode & 0x0F00) >> 8] - V[(opcode & 0x00F0) >> 4];
                     V[(opcode & 0x0F00) >> 8] = minusResult;
-                    // set flag if underflow
-                    unsigned char flag = 0;
+                    // set flag if NOT underflow
+                    unsigned char flag = 1;
                     if (V[(opcode & 0x0F00) >> 8] > V[(opcode & 0x00F0) >> 4])
                     {
-                        flag = 1;
+                        flag = 0;
                     }
                     V[15] = flag;
                     pc += 2;
@@ -259,7 +260,7 @@ void chip8::emulateCycle()
             case 0x0007:
                 {
                     const unsigned char minusResult = V[(opcode & 0x00F0) >> 4] - V[(opcode & 0x0F00) >> 8];
-                    if (V[(opcode & 0x00F0) >> 4] > V[(opcode & 0x0F00) >> 8])
+                    if (V[(opcode & 0x00F0) >> 4] >= V[(opcode & 0x0F00) >> 8])
                     {
                         V[15] = 1;
                     }
@@ -267,6 +268,7 @@ void chip8::emulateCycle()
                     {
                         V[15] = 0;
                     }
+                    V[(opcode & 0x0F00) >> 8] = minusResult;
                     pc += 2;
                     break;
                 }
@@ -286,7 +288,7 @@ void chip8::emulateCycle()
         switch (opcode & 0x000F)
         {
             case 0x0000:
-                if (V[opcode & 0x0F00 >> 8] != V[(opcode & 0x00F0 >> 4)])
+                if (V[(opcode & 0x0F00) >> 8] != V[(opcode & 0x00F0) >> 4])
                     {
                         pc += 4;
                     }
@@ -320,7 +322,7 @@ void chip8::emulateCycle()
             // Distribution
             std::uniform_int_distribution<> distrib(min_val, max_val);
             unsigned char randNum = distrib(gen);
-            V[opcode & 0x0F00 >> 8] = randNum & (opcode & 0x00FF);
+            V[(opcode & 0x0F00) >> 8] = randNum & (opcode & 0x00FF);
             pc += 2;
             break;
         }
@@ -336,7 +338,7 @@ void chip8::emulateCycle()
                 unsigned char spriteByte = memory[I+i];
                 for (int j = 0; j < 8; j++)
                 {
-                    unsigned char bit = (spriteByte >> 7-j) & 0x01;
+                    unsigned char bit = (spriteByte >> (7-j)) & 0x1;
                     if (xCoord + j >= 64)
                     {
                         break;

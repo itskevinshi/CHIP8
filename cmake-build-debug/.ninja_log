@@ -1,14 +1,48 @@
 # ninja log v6
-6	645	7624969816472278	CMakeFiles/lib.dir/src/chip8.cpp.obj	2cc919561b3e7520
-718	2221	7624969838534602	tests/chip8_test.exe	a26fd0c1eff21977
-646	718	7624969822860854	liblib.a	f315ebce1ba4392b
-718	2221	7624969838534602	C:/Users/kevin/Documents/UVA/Coding Projects/CHIP8/cmake-build-debug/tests/chip8_test[1]_tests.cmake	a26fd0c1eff21977
-15	1583	7624956824442213	tests/CMakeFiles/chip8_test.dir/chip8_test.cpp.obj	b89eaae832420088
-718	2221	7624969838534602	tests/chip8_test[1]_tests.cmake	a26fd0c1eff21977
-18	1287	7630135921960866	build.ninja	4cefea021c6c6e30
-7	2016	7630135922660334	CMakeFiles/lib.dir/src/chip8.cpp.obj	2cc919561b3e7520
-2017	2212	7630135942759359	liblib.a	f315ebce1ba4392b
-11	2972	7630135922700496	tests/CMakeFiles/chip8_test.dir/chip8_test.cpp.obj	b89eaae832420088
-2973	5256	7630135975081633	tests/chip8_test.exe	a26fd0c1eff21977
-2973	5256	7630135975081633	tests/chip8_test[1]_tests.cmake	a26fd0c1eff21977
-2973	5256	7630135975081633	C:/Users/kevin/Documents/UVA/Coding Projects/CHIP8/cmake-build-debug/tests/chip8_test[1]_tests.cmake	a26fd0c1eff21977
+7	1072	7630264095290832	CMakeFiles/lib.dir/src/chip8.cpp.obj	2cc919561b3e7520
+1172	3513	7630264130267147	tests/chip8_test.exe	a26fd0c1eff21977
+1072	1172	7630264105946037	liblib.a	f315ebce1ba4392b
+1172	3513	7630264130267147	C:/Users/kevin/Documents/UVA/Coding Projects/CHIP8/cmake-build-debug/tests/chip8_test[1]_tests.cmake	a26fd0c1eff21977
+17	4105	7630258251234276	tests/CMakeFiles/chip8_test.dir/chip8_test.cpp.obj	b89eaae832420088
+3	534	7630140913898325	build.ninja	4cefea021c6c6e30
+1172	3513	7630264130267147	tests/chip8_test[1]_tests.cmake	a26fd0c1eff21977
+10	1075	7630264491180508	CMakeFiles/lib.dir/src/chip8.cpp.obj	2cc919561b3e7520
+1079	1163	7630264501873851	liblib.a	f315ebce1ba4392b
+1163	3235	7630264523320316	tests/chip8_test.exe	a26fd0c1eff21977
+1163	3235	7630264523320316	tests/chip8_test[1]_tests.cmake	a26fd0c1eff21977
+1163	3235	7630264523320316	C:/Users/kevin/Documents/UVA/Coding Projects/CHIP8/cmake-build-debug/tests/chip8_test[1]_tests.cmake	a26fd0c1eff21977
+16	2731	7630265295499928	tests/CMakeFiles/chip8_test.dir/chip8_test.cpp.obj	b89eaae832420088
+2731	4852	7630265343730480	tests/chip8_test.exe	a26fd0c1eff21977
+2731	4852	7630265343730480	tests/chip8_test[1]_tests.cmake	a26fd0c1eff21977
+2731	4852	7630265343730480	C:/Users/kevin/Documents/UVA/Coding Projects/CHIP8/cmake-build-debug/tests/chip8_test[1]_tests.cmake	a26fd0c1eff21977
+17	3080	7630266011960653	tests/CMakeFiles/chip8_test.dir/chip8_test.cpp.obj	b89eaae832420088
+3081	5927	7630266070374112	tests/chip8_test.exe	a26fd0c1eff21977
+3081	5927	7630266070374112	tests/chip8_test[1]_tests.cmake	a26fd0c1eff21977
+3081	5927	7630266070374112	C:/Users/kevin/Documents/UVA/Coding Projects/CHIP8/cmake-build-debug/tests/chip8_test[1]_tests.cmake	a26fd0c1eff21977
+8	2427	7630267568129566	tests/CMakeFiles/chip8_test.dir/chip8_test.cpp.obj	b89eaae832420088
+2427	4669	7630267614662264	tests/chip8_test.exe	a26fd0c1eff21977
+2427	4669	7630267614662264	tests/chip8_test[1]_tests.cmake	a26fd0c1eff21977
+2427	4669	7630267614662264	C:/Users/kevin/Documents/UVA/Coding Projects/CHIP8/cmake-build-debug/tests/chip8_test[1]_tests.cmake	a26fd0c1eff21977
+10	2456	7630269220657712	tests/CMakeFiles/chip8_test.dir/chip8_test.cpp.obj	b89eaae832420088
+2457	4450	7630269264986469	tests/chip8_test.exe	a26fd0c1eff21977
+2457	4450	7630269264986469	tests/chip8_test[1]_tests.cmake	a26fd0c1eff21977
+2457	4450	7630269264986469	C:/Users/kevin/Documents/UVA/Coding Projects/CHIP8/cmake-build-debug/tests/chip8_test[1]_tests.cmake	a26fd0c1eff21977
+7	1247	7630272710711643	CMakeFiles/lib.dir/src/chip8.cpp.obj	2cc919561b3e7520
+1247	1337	7630272723117928	liblib.a	f315ebce1ba4392b
+1337	3149	7630272742059000	tests/chip8_test.exe	a26fd0c1eff21977
+1337	3149	7630272742059000	tests/chip8_test[1]_tests.cmake	a26fd0c1eff21977
+1337	3149	7630272742059000	C:/Users/kevin/Documents/UVA/Coding Projects/CHIP8/cmake-build-debug/tests/chip8_test[1]_tests.cmake	a26fd0c1eff21977
+10	1382	7630276976831806	CMakeFiles/lib.dir/src/chip8.cpp.obj	2cc919561b3e7520
+1383	1718	7630276990559409	liblib.a	f315ebce1ba4392b
+1718	3890	7630277015558733	tests/chip8_test.exe	a26fd0c1eff21977
+1718	3890	7630277015558733	tests/chip8_test[1]_tests.cmake	a26fd0c1eff21977
+1718	3890	7630277015558733	C:/Users/kevin/Documents/UVA/Coding Projects/CHIP8/cmake-build-debug/tests/chip8_test[1]_tests.cmake	a26fd0c1eff21977
+7	895	7630277452591478	CMakeFiles/lib.dir/src/chip8.cpp.obj	2cc919561b3e7520
+895	965	7630277461468205	liblib.a	f315ebce1ba4392b
+965	2682	7630277479267631	tests/chip8_test.exe	a26fd0c1eff21977
+965	2682	7630277479267631	tests/chip8_test[1]_tests.cmake	a26fd0c1eff21977
+965	2682	7630277479267631	C:/Users/kevin/Documents/UVA/Coding Projects/CHIP8/cmake-build-debug/tests/chip8_test[1]_tests.cmake	a26fd0c1eff21977
+7	2391	7630279159138462	tests/CMakeFiles/chip8_test.dir/chip8_test.cpp.obj	b89eaae832420088
+2391	4199	7630279200979301	tests/chip8_test.exe	a26fd0c1eff21977
+2391	4199	7630279200979301	tests/chip8_test[1]_tests.cmake	a26fd0c1eff21977
+2391	4199	7630279200979301	C:/Users/kevin/Documents/UVA/Coding Projects/CHIP8/cmake-build-debug/tests/chip8_test[1]_tests.cmake	a26fd0c1eff21977
