@@ -279,6 +279,7 @@ void chip8::emulateCycle()
                     break;
                 }
         }
+        break;
 
     case 0x9000:
         // skip next instruction if VX != VY
@@ -295,6 +296,7 @@ void chip8::emulateCycle()
                     }
                 break;
         }
+        break;
 
     case 0xA000:
         I = opcode & 0x0FFF;
@@ -357,6 +359,126 @@ void chip8::emulateCycle()
             }
             drawFlag = true;
             pc += 2;
+            break;
+        }
+
+    case 0xE000:
+        {
+            switch (opcode & 0x000F)
+            {
+            case 0x000E:
+                {
+                    // skip next opcode if key in the lower 4 bits of vX is pressed (note: on platforms that have 4 byte opcodes, like F000 on XO-CHIP, this needs to skip four bytes)
+                    unsigned char keyIndex = V[(opcode & 0x0F00) >> 8];
+                    if (key[keyIndex] == 1)
+                    {
+                        pc += 4;
+                    }
+                    else
+                    {
+                        pc += 2;
+                    }
+                    break;
+                }
+            case 0x0001:
+                {
+                    // skip next opcode if key in the lower 4 bits of vX is not pressed (note: on platforms that have 4 byte opcodes, like F000 on XO-CHIP, this needs to skip four bytes)
+                    unsigned char keyIndex = V[(opcode & 0x0F00) >> 8] & 0x000F;
+                    if (!(key[keyIndex] == 1))
+                    {
+                        pc += 4;
+                    }
+                    else
+                    {
+                        pc += 2;
+                    }
+                    break;
+                }
+            }
+            break;
+        }
+        case 0xF000:
+        {
+            switch (opcode & 0x00FF)
+            {
+                case 0x0007:
+                    {
+                        V[(opcode & 0x0F00) >> 8] = delay_timer;
+                        pc += 2;
+                        break;
+                    }
+                case 0x000A:
+                    {
+                        bool keyPressed = false;
+                        for (int i = 0; i < 16; i++)
+                        {
+                            if (key[i])
+                            {
+                                V[(opcode & 0x0F00) >> 8] = i;
+                                keyPressed = true;
+                                break;
+                            }
+                        }
+                        if (keyPressed)
+                        {
+                            pc += 2;
+                        }
+                        break;
+                    }
+                case 0x0015:
+                    {
+                        delay_timer = V[(opcode & 0x0F00) >> 8];
+                        pc += 2;
+                        break;
+                    }
+                case 0x0018:
+                    {
+                        sound_timer = V[(opcode & 0x0F00) >> 8];
+                        pc += 2;
+                        break;
+                    }
+                case 0x001E:
+                    {
+                        I += V[(opcode & 0x0F00) >> 8];
+                        pc += 2;
+                        break;
+                    }
+                case 0x0029:
+                    {
+                        I = V[(opcode & 0x0F00) >> 8] * 5;
+                        pc += 2;
+                        break;
+                    }
+                case 0x0033:
+                    {
+                        int value = V[(opcode & 0x0F00) >> 8];
+                        memory[I] = value / 100;
+                        memory[I + 1] = (value / 10) % 10;
+                        memory[I + 2] = value % 10;
+                        pc += 2;
+                        break;
+                    }
+                case 0x0055:
+                    {
+                        unsigned char index = (opcode & 0x0F00) >> 8;
+                        for (unsigned char i = 0; i <= index; i++)
+                        {
+                            memory[I + i] = V[i];
+                        }
+                        pc += 2;
+                        break;
+                    }
+                case 0x0065:
+                    {
+                        unsigned char index = (opcode & 0x0F00) >> 8;
+                        for (unsigned char i = 0; i <= index; i++)
+                        {
+                            V[i] = memory[I + i];
+                        }
+                        pc += 2;
+                        break;
+                    }
+            }
             break;
         }
     }
