@@ -516,6 +516,269 @@ protected:
         EXPECT_EQ(myChip8.gfx[65], 0);
         EXPECT_EQ(myChip8.V[0xF], 1);  // Collision occurred
     }
+
+    void OpcodeEX9ETest() {
+        myChip8.initialize();
+
+        myChip8.memory[0x200] = 0x63;
+        myChip8.memory[0x201] = 0x05;
+        myChip8.emulateCycle();
+
+        myChip8.key[0x5] = 1;
+
+        myChip8.memory[0x202] = 0xE3;
+        myChip8.memory[0x203] = 0x9E;
+        myChip8.emulateCycle();
+
+        EXPECT_EQ(myChip8.V[0x3], 0x05);
+        EXPECT_EQ(myChip8.pc, 0x206);
+    }
+
+    void OpcodeEX9ENoSkipTest() {
+        myChip8.initialize();
+
+        myChip8.memory[0x200] = 0x63;
+        myChip8.memory[0x201] = 0x05;
+        myChip8.emulateCycle();
+
+        myChip8.memory[0x202] = 0xE3;
+        myChip8.memory[0x203] = 0x9E;
+        myChip8.emulateCycle();
+
+        EXPECT_EQ(myChip8.V[0x3], 0x05);
+        EXPECT_EQ(myChip8.pc, 0x204);
+    }
+
+    void OpcodeEXA1Test() {
+        myChip8.initialize();
+
+        myChip8.memory[0x200] = 0x63;
+        myChip8.memory[0x201] = 0x05;
+        myChip8.emulateCycle();
+
+        myChip8.memory[0x202] = 0xE3;
+        myChip8.memory[0x203] = 0xA1;
+        myChip8.emulateCycle();
+
+        EXPECT_EQ(myChip8.V[0x3], 0x05);
+        EXPECT_EQ(myChip8.pc, 0x206);
+    }
+
+    void OpcodeEXA1NoSkipTest() {
+        myChip8.initialize();
+
+        myChip8.memory[0x200] = 0x63;
+        myChip8.memory[0x201] = 0x05;
+        myChip8.emulateCycle();
+
+        myChip8.key[0x5] = 1;
+
+        myChip8.memory[0x202] = 0xE3;
+        myChip8.memory[0x203] = 0xA1;
+        myChip8.emulateCycle();
+
+        EXPECT_EQ(myChip8.V[0x3], 0x05);
+        EXPECT_EQ(myChip8.pc, 0x204);
+    }
+
+    void OpcodeFX07Test() {
+        myChip8.initialize();
+
+        myChip8.delay_timer = 0x42;
+
+        myChip8.memory[0x200] = 0xF3;
+        myChip8.memory[0x201] = 0x07;
+        myChip8.emulateCycle();
+
+        EXPECT_EQ(myChip8.V[0x3], 0x42);
+        EXPECT_EQ(myChip8.delay_timer, 0x42);
+        EXPECT_EQ(myChip8.pc, 0x202);
+    }
+
+    void OpcodeFX0ATest() {
+        myChip8.initialize();
+
+        myChip8.memory[0x200] = 0xF3;
+        myChip8.memory[0x201] = 0x0A;
+        
+        // First cycle - no key pressed, PC shouldn't advance
+        myChip8.emulateCycle();
+        EXPECT_EQ(myChip8.pc, 0x200);
+
+        myChip8.key[0x5] = 1;
+        
+        myChip8.emulateCycle();
+        
+        EXPECT_EQ(myChip8.V[0x3], 0x5);
+        EXPECT_EQ(myChip8.pc, 0x202);
+    }
+
+    void OpcodeFX15Test() {
+        myChip8.initialize();
+
+        myChip8.memory[0x200] = 0x63;
+        myChip8.memory[0x201] = 0x42;
+        myChip8.emulateCycle();
+
+        myChip8.memory[0x202] = 0xF3;
+        myChip8.memory[0x203] = 0x15;
+        myChip8.emulateCycle();
+
+        EXPECT_EQ(myChip8.V[0x3], 0x42);
+        EXPECT_EQ(myChip8.delay_timer, 0x42);
+        EXPECT_EQ(myChip8.pc, 0x204);
+    }
+
+    void OpcodeFX18Test() {
+        myChip8.initialize();
+
+        myChip8.memory[0x200] = 0x63;
+        myChip8.memory[0x201] = 0x42;
+        myChip8.emulateCycle();
+
+        myChip8.memory[0x202] = 0xF3;
+        myChip8.memory[0x203] = 0x18;
+        myChip8.emulateCycle();
+
+        EXPECT_EQ(myChip8.V[0x3], 0x42);
+        EXPECT_EQ(myChip8.sound_timer, 0x42);
+        EXPECT_EQ(myChip8.pc, 0x204);
+    }
+
+    void OpcodeFX1ETest() {
+        myChip8.initialize();
+
+        myChip8.memory[0x200] = 0xA2;
+        myChip8.memory[0x201] = 0x34;
+        myChip8.emulateCycle();
+
+        myChip8.memory[0x202] = 0x63;
+        myChip8.memory[0x203] = 0x42;
+        myChip8.emulateCycle();
+
+        myChip8.memory[0x204] = 0xF3;
+        myChip8.memory[0x205] = 0x1E;
+        myChip8.emulateCycle();
+
+        EXPECT_EQ(myChip8.V[0x3], 0x42);
+        EXPECT_EQ(myChip8.I, 0x276);  // 0x234 + 0x42 = 0x276
+        EXPECT_EQ(myChip8.pc, 0x206);
+    }
+
+    void OpcodeFX29Test() {
+        myChip8.initialize();
+
+        myChip8.memory[0x200] = 0x63;
+        myChip8.memory[0x201] = 0x05;
+        myChip8.emulateCycle();
+
+        myChip8.memory[0x202] = 0xF3;
+        myChip8.memory[0x203] = 0x29;
+        myChip8.emulateCycle();
+
+        EXPECT_EQ(myChip8.V[0x3], 0x05);
+        EXPECT_EQ(myChip8.I, 0x05 * 5);
+        EXPECT_EQ(myChip8.pc, 0x204);
+
+        EXPECT_EQ(myChip8.memory[myChip8.I], 0xF0);
+        EXPECT_EQ(myChip8.memory[myChip8.I + 1], 0x80);
+        EXPECT_EQ(myChip8.memory[myChip8.I + 2], 0xF0);
+        EXPECT_EQ(myChip8.memory[myChip8.I + 3], 0x10);
+        EXPECT_EQ(myChip8.memory[myChip8.I + 4], 0xF0);
+    }
+
+    void OpcodeFX33Test() {
+        myChip8.initialize();
+
+        myChip8.memory[0x200] = 0x63;
+        myChip8.memory[0x201] = 0x9C;
+        myChip8.emulateCycle();
+
+        myChip8.memory[0x202] = 0xA4;
+        myChip8.memory[0x203] = 0x00;
+        myChip8.emulateCycle();
+
+        myChip8.memory[0x204] = 0xF3;
+        myChip8.memory[0x205] = 0x33;
+        myChip8.emulateCycle();
+
+        EXPECT_EQ(myChip8.V[0x3], 156);
+        EXPECT_EQ(myChip8.memory[0x400], 1);
+        EXPECT_EQ(myChip8.memory[0x401], 5);
+        EXPECT_EQ(myChip8.memory[0x402], 6);
+        EXPECT_EQ(myChip8.pc, 0x206);
+    }
+
+    void OpcodeFX55Test() {
+        myChip8.initialize();
+
+        myChip8.memory[0x200] = 0x60;
+        myChip8.memory[0x201] = 0x11;  // V0 = 0x11
+        myChip8.emulateCycle();
+
+        myChip8.memory[0x202] = 0x61;
+        myChip8.memory[0x203] = 0x22;  // V1 = 0x22
+        myChip8.emulateCycle();
+
+        myChip8.memory[0x204] = 0x62;
+        myChip8.memory[0x205] = 0x33;  // V2 = 0x33
+        myChip8.emulateCycle();
+
+        myChip8.memory[0x206] = 0x63;
+        myChip8.memory[0x207] = 0x44;  // V3 = 0x44
+        myChip8.emulateCycle();
+
+        myChip8.memory[0x208] = 0xA4;
+        myChip8.memory[0x209] = 0x00;  // I = 0x400
+        myChip8.emulateCycle();
+
+        myChip8.memory[0x20A] = 0xF3;
+        myChip8.memory[0x20B] = 0x55;
+        myChip8.emulateCycle();
+
+        EXPECT_EQ(myChip8.memory[0x400], 0x11);
+        EXPECT_EQ(myChip8.memory[0x401], 0x22);
+        EXPECT_EQ(myChip8.memory[0x402], 0x33);
+        EXPECT_EQ(myChip8.memory[0x403], 0x44);
+        EXPECT_EQ(myChip8.pc, 0x20C);
+    }
+
+    void OpcodeFX65Test() {
+        myChip8.initialize();
+
+        myChip8.memory[0x400] = 0x11;
+        myChip8.memory[0x401] = 0x22;
+        myChip8.memory[0x402] = 0x33;
+        myChip8.memory[0x403] = 0x44;
+
+        myChip8.memory[0x200] = 0xA4;
+        myChip8.memory[0x201] = 0x00;
+        myChip8.emulateCycle();
+
+        myChip8.memory[0x202] = 0xF3;
+        myChip8.memory[0x203] = 0x65;
+        myChip8.emulateCycle();
+
+        EXPECT_EQ(myChip8.V[0], 0x11);
+        EXPECT_EQ(myChip8.V[1], 0x22);
+        EXPECT_EQ(myChip8.V[2], 0x33);
+        EXPECT_EQ(myChip8.V[3], 0x44);
+        EXPECT_EQ(myChip8.pc, 0x204);
+    }
+
+    void Opcode00EETest() {
+        myChip8.initialize();
+        
+        myChip8.stack[0] = 0x300;
+        myChip8.sp = 1;
+
+        myChip8.memory[0x200] = 0x00;
+        myChip8.memory[0x201] = 0xEE;
+        myChip8.emulateCycle();
+
+        EXPECT_EQ(myChip8.sp, 0);
+        EXPECT_EQ(myChip8.pc, 0x302);
+    }
 };
 
 TEST_F(Chip8Test, ClearScreenOpcode) {
@@ -621,4 +884,60 @@ TEST_F(Chip8Test, OpcodeCXNN) {
 
 TEST_F(Chip8Test, OpcodeDXYN) {
     OpcodeDXYNTest();
+}
+
+TEST_F(Chip8Test, OpcodeEX9E) {
+    OpcodeEX9ETest();
+}
+
+TEST_F(Chip8Test, OpcodeEX9ENoSkip) {
+    OpcodeEX9ENoSkipTest();
+}
+
+TEST_F(Chip8Test, OpcodeEXA1) {
+    OpcodeEXA1Test();
+}
+
+TEST_F(Chip8Test, OpcodeEXA1NoSkip) {
+    OpcodeEXA1NoSkipTest();
+}
+
+TEST_F(Chip8Test, OpcodeFX07) {
+    OpcodeFX07Test();
+}
+
+TEST_F(Chip8Test, OpcodeFX0A) {
+    OpcodeFX0ATest();
+}
+
+TEST_F(Chip8Test, OpcodeFX15) {
+    OpcodeFX15Test();
+}
+
+TEST_F(Chip8Test, OpcodeFX18) {
+    OpcodeFX18Test();
+}
+
+TEST_F(Chip8Test, OpcodeFX1E) {
+    OpcodeFX1ETest();
+}
+
+TEST_F(Chip8Test, OpcodeFX29) {
+    OpcodeFX29Test();
+}
+
+TEST_F(Chip8Test, OpcodeFX33) {
+    OpcodeFX33Test();
+}
+
+TEST_F(Chip8Test, OpcodeFX55) {
+    OpcodeFX55Test();
+}
+
+TEST_F(Chip8Test, OpcodeFX65) {
+    OpcodeFX65Test();
+}
+
+TEST_F(Chip8Test, Opcode00EE) {
+    Opcode00EETest();
 }
