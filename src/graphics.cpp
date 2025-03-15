@@ -42,7 +42,7 @@ void setupGraphics()
     }
 }
 
-void drawGraphics(chip8 chip8Instance)
+void drawGraphics(const chip8& chip8Instance)
 {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     if (SDL_RenderClear(renderer) != true)

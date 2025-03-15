@@ -125,7 +125,7 @@ void chip8::emulateCycle()
     case 0x2000:
         if (sp < 16)
         {
-            pc = stack[sp];
+            stack[sp] = pc;
             sp++;
             pc = opcode & 0x0FFF;
         }
@@ -309,7 +309,7 @@ void chip8::emulateCycle()
         break;
 
     case 0xB000:
-        pc = V[0] + opcode & 0x0FFF;
+        pc = V[0] + (opcode & 0x0FFF);
         break;
 
     case 0xC000:
@@ -536,43 +536,47 @@ void chip8::setKeys(const SDL_Event *e)
 {
     if (e->type == SDL_EVENT_KEY_DOWN) {
         switch (e->key.scancode) {
-        case SDL_SCANCODE_1: key[0] = 1; break;
-        case SDL_SCANCODE_2: key[1] = 1; break;
-        case SDL_SCANCODE_3: key[2] = 1; break;
-        case SDL_SCANCODE_4: key[3] = 1; break;
-        case SDL_SCANCODE_Q: key[4] = 1; break;
-        case SDL_SCANCODE_W: key[5] = 1; break;
-        case SDL_SCANCODE_E: key[6] = 1; break;
-        case SDL_SCANCODE_R: key[7] = 1; break;
-        case SDL_SCANCODE_A: key[8] = 1; break;
-        case SDL_SCANCODE_S: key[9] = 1; break;
-        case SDL_SCANCODE_D: key[10] = 1; break;
-        case SDL_SCANCODE_F: key[11] = 1; break;
-        case SDL_SCANCODE_Z: key[12] = 1; break;
-        case SDL_SCANCODE_X: key[13] = 1; break;
-        case SDL_SCANCODE_C: key[14] = 1; break;
-        case SDL_SCANCODE_V: key[15] = 1; break;
+        case SDL_SCANCODE_1: key[0] = 1; std::cout << "Key 1 pressed" << std::endl; break;
+        case SDL_SCANCODE_2: key[1] = 1; std::cout << "Key 2 pressed" << std::endl; break;
+        case SDL_SCANCODE_3: key[2] = 1; std::cout << "Key 3 pressed" << std::endl; break;
+        case SDL_SCANCODE_4: key[3] = 1; std::cout << "Key 4 pressed" << std::endl; break;
+        case SDL_SCANCODE_Q: key[4] = 1; std::cout << "Key Q pressed" << std::endl; break;
+        case SDL_SCANCODE_W: key[5] = 1; std::cout << "Key W pressed" << std::endl; break;
+        case SDL_SCANCODE_E: key[6] = 1; std::cout << "Key E pressed" << std::endl; break;
+        case SDL_SCANCODE_R: key[7] = 1; std::cout << "Key R pressed" << std::endl; break;
+        case SDL_SCANCODE_A: key[8] = 1; std::cout << "Key A pressed" << std::endl; break;
+        case SDL_SCANCODE_S: key[9] = 1; std::cout << "Key S pressed" << std::endl; break;
+        case SDL_SCANCODE_D: key[10] = 1; std::cout << "Key D pressed" << std::endl; break;
+        case SDL_SCANCODE_F: key[11] = 1; std::cout << "Key F pressed" << std::endl; break;
+        case SDL_SCANCODE_Z: key[12] = 1; std::cout << "Key Z pressed" << std::endl; break;
+        case SDL_SCANCODE_X: key[13] = 1; std::cout << "Key X pressed" << std::endl; break;
+        case SDL_SCANCODE_C: key[14] = 1; std::cout << "Key C pressed" << std::endl; break;
+        case SDL_SCANCODE_V: key[15] = 1; std::cout << "Key V pressed" << std::endl; break;
         }
     }
-    if (e->type == SDL_EVENT_KEY_UP)
-    {
+    if (e->type == SDL_EVENT_KEY_UP) {
         switch (e->key.scancode) {
-        case SDL_SCANCODE_1: key[0] = 0; break;
-        case SDL_SCANCODE_2: key[1] = 0; break;
-        case SDL_SCANCODE_3: key[2] = 0; break;
-        case SDL_SCANCODE_4: key[3] = 0; break;
-        case SDL_SCANCODE_Q: key[4] = 0; break;
-        case SDL_SCANCODE_W: key[5] = 0; break;
-        case SDL_SCANCODE_E: key[6] = 0; break;
-        case SDL_SCANCODE_R: key[7] = 0; break;
-        case SDL_SCANCODE_A: key[8] = 0; break;
-        case SDL_SCANCODE_S: key[9] = 0; break;
-        case SDL_SCANCODE_D: key[10] = 0; break;
-        case SDL_SCANCODE_F: key[11] = 0; break;
-        case SDL_SCANCODE_Z: key[12] = 0; break;
-        case SDL_SCANCODE_X: key[13] = 0; break;
-        case SDL_SCANCODE_C: key[14] = 0; break;
-        case SDL_SCANCODE_V: key[15] = 0; break;
+        case SDL_SCANCODE_1: key[0] = 0; std::cout << "Key 1 released" << std::endl; break;
+        case SDL_SCANCODE_2: key[1] = 0; std::cout << "Key 2 released" << std::endl; break;
+        case SDL_SCANCODE_3: key[2] = 0; std::cout << "Key 3 released" << std::endl; break;
+        case SDL_SCANCODE_4: key[3] = 0; std::cout << "Key 4 released" << std::endl; break;
+        case SDL_SCANCODE_Q: key[4] = 0; std::cout << "Key Q released" << std::endl; break;
+        case SDL_SCANCODE_W: key[5] = 0; std::cout << "Key W released" << std::endl; break;
+        case SDL_SCANCODE_E: key[6] = 0; std::cout << "Key E released" << std::endl; break;
+        case SDL_SCANCODE_R: key[7] = 0; std::cout << "Key R released" << std::endl; break;
+        case SDL_SCANCODE_A: key[8] = 0; std::cout << "Key A released" << std::endl; break;
+        case SDL_SCANCODE_S: key[9] = 0; std::cout << "Key S released" << std::endl; break;
+        case SDL_SCANCODE_D: key[10] = 0; std::cout << "Key D released" << std::endl; break;
+        case SDL_SCANCODE_F: key[11] = 0; std::cout << "Key F released" << std::endl; break;
+        case SDL_SCANCODE_Z: key[12] = 0; std::cout << "Key Z released" << std::endl; break;
+        case SDL_SCANCODE_X: key[13] = 0; std::cout << "Key X released" << std::endl; break;
+        case SDL_SCANCODE_C: key[14] = 0; std::cout << "Key C released" << std::endl; break;
+        case SDL_SCANCODE_V: key[15] = 0; std::cout << "Key V released" << std::endl; break;
         }
     }
+}
+
+void chip8::updateTimers() {
+    if(delay_timer > 0) delay_timer--;
+    if(sound_timer > 0) sound_timer--;
 }

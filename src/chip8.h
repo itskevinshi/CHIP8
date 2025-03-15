@@ -18,6 +18,7 @@ public:
     void debugRender() const;
     bool loadApplication(const char * filename);
     void setKeys(const SDL_Event *e);
+    void updateTimers();
 
     // Chip8
     unsigned char  gfx[64 * 32] = {0x00};	// Total amount of pixels: 2048

@@ -18,6 +18,6 @@ extern SDL_Window* window;
 extern SDL_Renderer* renderer;
 
 void setupGraphics();
-void drawGraphics(chip8 chip8Instance);
+void drawGraphics(const chip8& chip8Instance);
 
 #endif //GRAPHICS_H
