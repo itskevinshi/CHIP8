@@ -2,6 +2,9 @@
 // Created by kevin on 2/18/2025.
 //
 #pragma once
+#include <SDL3/SDL_events.h>
+
+
 class chip8 {
 public:
     chip8();
@@ -14,6 +17,7 @@ public:
     void emulateCycle();
     void debugRender() const;
     bool loadApplication(const char * filename);
+    void setKeys(const SDL_Event *e);
 
     // Chip8
     unsigned char  gfx[64 * 32] = {0x00};	// Total amount of pixels: 2048

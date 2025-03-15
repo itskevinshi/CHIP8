@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <iostream>
 #include <random>
+#include <SDL3/SDL_events.h>
+#include <SDL3/SDL_scancode.h>
 
 unsigned char chip8_fontset[80]
 {
@@ -75,6 +77,7 @@ void chip8::initialize()
     // reset timers
     delay_timer = 0;
     sound_timer = 0;
+    drawFlag = true;
 }
 
 void chip8::emulateCycle()
@@ -527,4 +530,49 @@ bool chip8::loadApplication(const char * filename)
 
     input.close();
     return true;
+}
+
+void chip8::setKeys(const SDL_Event *e)
+{
+    if (e->type == SDL_EVENT_KEY_DOWN) {
+        switch (e->key.scancode) {
+        case SDL_SCANCODE_1: key[0] = 1; break;
+        case SDL_SCANCODE_2: key[1] = 1; break;
+        case SDL_SCANCODE_3: key[2] = 1; break;
+        case SDL_SCANCODE_4: key[3] = 1; break;
+        case SDL_SCANCODE_Q: key[4] = 1; break;
+        case SDL_SCANCODE_W: key[5] = 1; break;
+        case SDL_SCANCODE_E: key[6] = 1; break;
+        case SDL_SCANCODE_R: key[7] = 1; break;
+        case SDL_SCANCODE_A: key[8] = 1; break;
+        case SDL_SCANCODE_S: key[9] = 1; break;
+        case SDL_SCANCODE_D: key[10] = 1; break;
+        case SDL_SCANCODE_F: key[11] = 1; break;
+        case SDL_SCANCODE_Z: key[12] = 1; break;
+        case SDL_SCANCODE_X: key[13] = 1; break;
+        case SDL_SCANCODE_C: key[14] = 1; break;
+        case SDL_SCANCODE_V: key[15] = 1; break;
+        }
+    }
+    if (e->type == SDL_EVENT_KEY_UP)
+    {
+        switch (e->key.scancode) {
+        case SDL_SCANCODE_1: key[0] = 0; break;
+        case SDL_SCANCODE_2: key[1] = 0; break;
+        case SDL_SCANCODE_3: key[2] = 0; break;
+        case SDL_SCANCODE_4: key[3] = 0; break;
+        case SDL_SCANCODE_Q: key[4] = 0; break;
+        case SDL_SCANCODE_W: key[5] = 0; break;
+        case SDL_SCANCODE_E: key[6] = 0; break;
+        case SDL_SCANCODE_R: key[7] = 0; break;
+        case SDL_SCANCODE_A: key[8] = 0; break;
+        case SDL_SCANCODE_S: key[9] = 0; break;
+        case SDL_SCANCODE_D: key[10] = 0; break;
+        case SDL_SCANCODE_F: key[11] = 0; break;
+        case SDL_SCANCODE_Z: key[12] = 0; break;
+        case SDL_SCANCODE_X: key[13] = 0; break;
+        case SDL_SCANCODE_C: key[14] = 0; break;
+        case SDL_SCANCODE_V: key[15] = 0; break;
+        }
+    }
 }

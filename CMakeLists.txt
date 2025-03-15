@@ -5,20 +5,40 @@ include(GoogleTest)
 
 set(CMAKE_CXX_STANDARD 23)
 
-# Set SDL3_DIR to point to the directory containing SDL3Config.cmake
-set(SDL3_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/SDL3-3.2.8/cmake")
-
-# Find SDL3 package
+# SDL3 Configuration ----------------------------------------------------------
+set(SDL3_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/SDL3-3.2.8/x86_64-w64-mingw32/lib/cmake/SDL3")
 find_package(SDL3 REQUIRED)
+message(STATUS "SDL3 found: ${SDL3_VERSION}")
 
-add_library(lib src/chip8.h src/chip8.cpp)
+# Library Target --------------------------------------------------------------
+add_library(lib
+        src/chip8.cpp
+        src/chip8.h
+)
 
-add_executable(CHIP8 src/main.cpp
+target_include_directories(lib PRIVATE
+        "${SDL3_DIR}/../../../include"  # Base include path
+        "${CMAKE_CURRENT_SOURCE_DIR}/src"
+)
+
+# Executable Target -----------------------------------------------------------
+add_executable(CHIP8
+        src/main.cpp
         src/graphics.cpp
-        src/graphics.h)
+        src/graphics.h
+)
 
-target_link_libraries(CHIP8 PRIVATE lib SDL3::SDL3-shared)
+target_include_directories(CHIP8 PRIVATE
+        "${SDL3_DIR}/../../../include/SDL3"  # SDL3 headers
+        "${CMAKE_CURRENT_SOURCE_DIR}/src"
+)
 
+target_link_libraries(CHIP8 PRIVATE
+        lib
+        SDL3::SDL3-shared
+)
+
+# Testing Configuration -------------------------------------------------------
 if(BUILD_TESTING)
     find_package(GTest REQUIRED)
     add_subdirectory(tests)
